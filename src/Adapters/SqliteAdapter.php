@@ -6,7 +6,7 @@ use Error;
 
 class SqliteAdapter extends AbstractAdapter
 {
-    public function format(string $column, string $interval): string
+    public function format(string $column, string $interval, string $timezone): string
     {
         $format = match ($interval) {
             'minute' => '%Y-%m-%d %H:%M:00',

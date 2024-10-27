@@ -6,7 +6,7 @@ use Error;
 
 class PgsqlAdapter extends AbstractAdapter
 {
-    public function format(string $column, string $interval): string
+    public function format(string $column, string $interval, string $timezone): string
     {
         $format = match ($interval) {
             'minute' => 'YYYY-MM-DD HH24:MI:00',
@@ -17,6 +17,10 @@ class PgsqlAdapter extends AbstractAdapter
             'year' => 'YYYY',
             default => throw new Error('Invalid interval.'),
         };
+
+        if ($timezone !== 'UTC') {
+            return "to_char(\"{$column}\" AT TIME ZONE 'UTC' AT TIME ZONE '{$timezone}', '{$format}')";
+        }
 
         return "to_char(\"{$column}\", '{$format}')";
     }

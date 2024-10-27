@@ -6,7 +6,7 @@ use Error;
 
 class MySqlAdapter extends AbstractAdapter
 {
-    public function format(string $column, string $interval): string
+    public function format(string $column, string $interval, string $timezone): string
     {
         $format = match ($interval) {
             'minute' => '%Y-%m-%d %H:%i:00',
@@ -17,6 +17,10 @@ class MySqlAdapter extends AbstractAdapter
             'year' => '%Y',
             default => throw new Error('Invalid interval.'),
         };
+
+        if ($timezone !== 'UTC') {
+            return "date_format(CONVERT_TZ({$column}, 'UTC', '{$timezone}'), '{$format}')";
+        }
 
         return "date_format({$column}, '{$format}')";
     }
