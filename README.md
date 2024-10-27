@@ -84,6 +84,22 @@ You can use the following aggregates:
 -   `min('column')`
 -   `count('*')`
 
+## Timezone
+
+Use the `timezone()` method to set a custom timezone for the date aggregation operations. This is particularly useful if you need to align data trends with a specific regional timezone.
+
+Example:
+
+```php
+Trend::model(Order::class)
+    ->timezone('Asia/Dhaka')
+    ->between(...)
+    ->perDay()
+    ->count();
+```
+
+This example will perform the aggregation operations in the "Asia/Dhaka" timezone, adjusting all date-based intervals accordingly.
+
 ## Date Column
 
 By default, laravel-trend assumes that the model on which the operation is being performed has a `created_at` date column. If your model uses a different column name for the date or you want to use a different one, you should specify it using the `dateColumn(string $column)` method.
