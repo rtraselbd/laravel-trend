@@ -23,6 +23,8 @@ class Trend
 
     public string $dateAlias = 'date';
 
+    public string $timezone = 'UTC';
+
     public function __construct(public Builder $builder)
     {
     }
@@ -92,6 +94,13 @@ class Trend
     public function dateAlias(string $alias): self
     {
         $this->dateAlias = $alias;
+
+        return $this;
+    }
+
+    public function timezone(string $timezone): self
+    {
+        $this->timezone = $timezone;
 
         return $this;
     }
@@ -177,7 +186,7 @@ class Trend
             default => throw new Error('Unsupported database driver.'),
         };
 
-        return $adapter->format($this->dateColumn, $this->interval);
+        return $adapter->format($this->dateColumn, $this->interval, $this->timezone);
     }
 
     protected function getCarbonDateFormat(): string
